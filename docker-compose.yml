@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  retrotector:
+    build: .
+    container_name: retrotector
+    volumes:
+      - ./data:/data
+    command: >
+      /data/input.fasta /data/output
+      -l 200 -i 90 -d 15000
+
