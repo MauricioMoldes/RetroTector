@@ -1,49 +1,37 @@
-# RetroTector
-RetroTector 
+# RetroTector - Fork by Department of Genomic Medicine, Rigshospitalet
 
-2021-05-04
+Welcome to our fork of **RetroTector**, a tool for detecting endogenous retroviruses in genomic sequences.
 
-----
-• Download and uncompress the RetroTector package:
-  ReTe1.0.1.zip
-  
-• See the included html documentation for setup
+---
 
-----
-Quick start:
+## About This Fork
 
-• Update full path to working directory in:
+This repository contains our customized version of RetroTector maintained by the Department of Genomic Medicine, Rigshospitalet, Denmark. We have enhanced the original application by creating a **Docker container** to simplify deployment and usage across various computing environments, including HPC clusters.
 
-  ReTe1.0.1/Database/Configuration.txt
-  
-• Start command (Mac/Unix) for RetroTector in the 'ReTe1.0.1/' directory:
+Our goal is to ensure the software is robust, reproducible, and easy to integrate into modern bioinformatics pipelines.
 
-  java -Xmx1024m -classpath "RetroTector101.jar:." retrotector/RetroTector
-  
-• See the included html documentation for details:
+---
 
-  ReTe1.0.1/Documentation/RetroTector.html
+## Features
 
+- **Containerized Application:**  
+  We provide a Docker image that packages RetroTector and all its dependencies, including Java 21, ensuring consistent execution regardless of the host system.
 
-• Start analyzing: 
-1. Place the fasta file(s) in ~/ReTe1.0.1/Workplace/NewDNA/
-2. Run "SweepDNA" from the RetroTector GUI "Execute" dropdown menu to process the fasta file(s) and generate folder(s) with script files in ~/ReTe1.0.1/Workplace/
-3. Process all scripts automatically by navigating to  ~/ReTe1.0.1//Workplace/ in RetroTector GUI and run "SweepScripts" from the dropdown menu.
-     This will process LTRID, ORFID and RetroVID in turn to generate results files.
-4. Navigate to the results folder(s) in RetroTector GUI and use "Choose script" to select the summarized results file "001SelectedChains.txt"
-5. Then "Execute script" in RetroTector GUI to view the results graphics
+- **Parallel Execution:**  
+  Our Docker Compose setup supports running multiple instances concurrently with separate mounted workspaces.
 
-  	
-----
-Please cite RetroTector in publications:
+- **Configuration Automation:**  
+  The container entrypoint automatically updates configuration files to reflect the runtime environment, enabling seamless operation without manual tweaks.
 
-	Sperber GO, Airola T, Jern P, Blomberg J.
-	Automated recognition of retroviral sequences in genomic data--RetroTector.
-	Nucleic Acids Res. 2007;35(15):4964-76.
-	doi: 10.1093/nar/gkm515
-	
-----
-Correspondence:	Patric.Jern@imbim.uu.se
+- **Cluster Ready:**  
+  The container is designed to be compatible with HPC environments and can be converted to Singularity images for cluster deployment.
 
+---
 
+## Quick Start
+
+### Build the Docker Image
+
+```bash
+docker build -t retrotector .
 

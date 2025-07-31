@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CONFIG_FILE="/opt/RetroTector/ReTe1.0.1/Database/Config.txt"
+CONFIG_FILE="/opt/RetroTector/ReTe1.0.1/Database/Configuration.txt"
 WORKDIR="/opt/RetroTector/ReTe1.0.1/Workplace/"
 
 # Replace the WorkingDirectory line

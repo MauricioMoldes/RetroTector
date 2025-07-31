@@ -26,7 +26,7 @@ ENV PATH="$JAVA_HOME/bin:$PATH"
 WORKDIR /opt
 
 # Clone the RetroTector repository
-RUN git clone https://github.com/PatricJernLab/RetroTector.git
+RUN git clone https://github.com/MauricioMoldes/RetroTector.git
 
 # Change into the repository directory
 WORKDIR /opt/RetroTector
