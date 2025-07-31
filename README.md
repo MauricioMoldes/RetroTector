@@ -34,4 +34,52 @@ Our goal is to ensure the software is robust, reproducible, and easy to integrat
 
 ```bash
 docker build -t retrotector .
+```
 
+## Run a Container for a Sample
+
+```bash
+docker run --rm -it \
+  -v /path/to/sample1/:/opt/RetroTector/ReTe1.0.1/Workplace/ \
+  -w /opt/RetroTector/ReTe1.0.1 \
+  retrotector bash
+```
+
+## Run Multiple Containers with Docker Compose
+
+We provide a `docker-compose.yml` example to run four instances in parallel, each mounted to a different sample directory.
+
+```bash
+docker-compose up --build
+```
+
+## Singularity Image
+
+To deploy on HPC clusters, convert the Docker image to a Singularity image:
+
+```bash
+singularity build retrotector.sif docker-daemon://retrotector:latest
+```
+
+
+## Usage Notes
+
+The configuration file `/opt/RetroTector/ReTe1.0.1/Database/Config.txt` is automatically updated in the container to set the correct working directory.
+
+The container runs RetroTector commands:
+
+```bash
+java -cp RetroTector101.jar retrotector.RetroTectorEngine SweepDNA quit
+java -cp RetroTector101.jar retrotector.RetroTectorEngine SweepScripts quit
+```
+
+
+Mount your input data to `/opt/RetroTector/ReTe1.0.1/Workplace/` inside the container.
+
+## Contact & Contributions
+
+For questions or contributions, please contact:
+
+Department of Genomic Medicine  
+Rigshospitalet, Copenhagen, Denmark  
+Email: [frederik.otzen.bagger@regionh.dk]
