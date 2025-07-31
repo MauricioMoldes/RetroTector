@@ -1,12 +1,31 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  retrotector:
-    build: .
-    container_name: retrotector
+  retrotector1:
+    image: retrotector
     volumes:
-      - ./data:/data
-    command: >
-      /data/input.fasta /data/output
-      -l 200 -i 90 -d 15000
+      - /mnt/retro_data/sample1/:/opt/RetroTector/ReTe1.0.1/Workplace/
+    working_dir: /opt/RetroTector/ReTe1.0.1
+    entrypoint: ["/bin/bash", "-c", "/entrypoint.sh"]
+
+  retrotector2:
+    image: retrotector
+    volumes:
+      - /mnt/retro_data/sample2/:/opt/RetroTector/ReTe1.0.1/Workplace/
+    working_dir: /opt/RetroTector/ReTe1.0.1
+    entrypoint: ["/bin/bash", "-c", "/entrypoint.sh"]
+
+  retrotector3:
+    image: retrotector
+    volumes:
+      - /mnt/retro_data/sample3/:/opt/RetroTector/ReTe1.0.1/Workplace/
+    working_dir: /opt/RetroTector/ReTe1.0.1
+    entrypoint: ["/bin/bash", "-c", "/entrypoint.sh"]
+
+  retrotector4:
+    image: retrotector
+    volumes:
+      - /mnt/retro_data/sample4/:/opt/RetroTector/ReTe1.0.1/Workplace/
+    working_dir: /opt/RetroTector/ReTe1.0.1
+    entrypoint: ["/bin/bash", "-c", "/entrypoint.sh"]
 
