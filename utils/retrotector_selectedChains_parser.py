@@ -709,21 +709,36 @@ def read_parse_write(read_fname: str,
 
 
 ###############################################################################
-
 if __name__ == '__main__':
     import argparse
+    import pathlib
 
     parser = argparse.ArgumentParser(
-                    prog='RetroTector__SelectedChains__parser',
-                    description='This programs parses the output of the SelectedChains script of Retrotector into a JSON file',
-                    epilog='Good Luck')
-    parser.add_argument('SelectedChains_file',
-                        help="Path and name of the output file of SelectedChains"
-                        )
-    parser.add_argument('Output_JSON',
-                        help="Path and name of the output JSON file"
-                        )
-    args = parser.parse_args()
-    read_parse_write(args.SelectedChains_file, args.Output_JSON)
+        prog='RetroTector__SelectedChains__parser',
+        description='Parses the output of the SelectedChains script of RetroTector into JSON',
+        epilog='Good Luck'
+    )
+    parser.add_argument('-f', '--file', dest='SelectedChains_file',
+                        help="Path and name of the output file of SelectedChains")
+    parser.add_argument('-o', '--output', dest='Output_JSON',
+                        help="Path and name of the output JSON file (for single file mode)")
+    parser.add_argument('--folder', dest='Input_folder',
+                        help="Path to a folder containing SelectedChains files (recursively parsed)")
+    parser.add_argument('--output_folder', dest='Output_folder',
+                        help="Path to folder where parsed JSONs will be stored (mirrors input structure)")
 
-            
+    args = parser.parse_args()
+
+    if args.Input_folder:
+        input_root = pathlib.Path(args.Input_folder)
+        output_root = pathlib.Path(args.Output_folder)
+        for txt_file in input_root.rglob("*SelectedChains.txt"):
+            relative_path = txt_file.relative_to(input_root)
+            out_file = output_root / relative_path.with_suffix(".json")
+            out_file.parent.mkdir(parents=True, exist_ok=True)
+            read_parse_write(str(txt_file), str(out_file))
+    else:
+        if not args.SelectedChains_file or not args.Output_JSON:
+            raise ValueError("For single file mode, you must provide both --file and --output")
+        read_parse_write(args.SelectedChains_file, args.Output_JSON)
+           
