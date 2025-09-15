@@ -1,5 +1,4 @@
-
--- Create schema 
+-- Create schema
 
 DROP SCHEMA retrotector_dream CASCADE;
 CREATE SCHEMA retrotector_dream;
@@ -14,17 +13,17 @@ CREATE TYPE ltr_type AS ENUM ('solo', '5', '3');
 CREATE TYPE chain_type AS ENUM ('P', 'S');
 
 -- Table: seq
-CREATE TABLE seq (
-    id SERIAL PRIMARY KEY,
-    file_name TEXT NOT NULL,
-    contig TEXT NOT NULL,
-    chunk TEXT NOT NULL
-);
+--CREATE TABLE seq (
+--    id SERIAL PRIMARY KEY,
+--    file_name TEXT NOT NULL,
+--    contig TEXT NOT NULL,
+--    chunk TEXT NOT NULL
+--);
 
 -- Table: run_metadata
 CREATE TABLE run_metadata (
     id SERIAL PRIMARY KEY,
-    seq_id INTEGER REFERENCES seq(id) ON DELETE SET NULL,
+    -- seq_id INTEGER REFERENCES seq(id) ON DELETE SET NULL,
     executer TEXT NOT NULL,
     dna_file TEXT NOT NULL,
     selected TEXT NOT NULL,
@@ -59,7 +58,7 @@ CREATE TABLE run_metadata (
 -- Table: herv_chain (was pseugid)
 CREATE TABLE herv_chain (
     id SERIAL PRIMARY KEY,
-    seq_id INTEGER REFERENCES seq(id) ON DELETE CASCADE,
+    -- seq_id INTEGER REFERENCES seq(id) ON DELETE CASCADE,
     run_metadata_id INTEGER REFERENCES run_metadata(id) ON DELETE SET NULL,
     type_of_chain chain_type NOT NULL,
     chain_level INTEGER NOT NULL,
@@ -74,7 +73,7 @@ CREATE TABLE herv_chain (
 CREATE TABLE ltr (
     id SERIAL PRIMARY KEY,
     herv_chain_id INTEGER REFERENCES herv_chain(id) ON DELETE CASCADE,
-    run_metadata_id INTEGER REFERENCES run_metadata(id) ON DELETE SET NULL,
+    -- run_metadata_id INTEGER REFERENCES run_metadata(id) ON DELETE SET NULL,
     is_primary BOOLEAN NOT NULL,
     ltr_type ltr_type NOT NULL,
     factor_score FLOAT,
@@ -166,4 +165,5 @@ CREATE TABLE ltrs_of_hervchain (
     herv_chain_id INTEGER NOT NULL REFERENCES herv_chain(id) ON DELETE CASCADE,
     ltr_id INTEGER NOT NULL REFERENCES ltr(id) ON DELETE CASCADE
 );
+
 

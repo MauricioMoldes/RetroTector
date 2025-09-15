@@ -34,6 +34,9 @@ WORKDIR /opt/RetroTector
 # Unzip the ReTe1.0.1.zip archive
 RUN unzip ReTe1.0.1.zip
 
+# Make Database writable
+RUN chmod -R 777 /opt/RetroTector/ReTe1.0.1/Database
+
 # Set working directory to the unzipped RetroTector folder
 WORKDIR /opt/RetroTector/ReTe1.0.1
 
