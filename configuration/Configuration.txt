@@ -1,0 +1,54 @@
+WorkingDirectory: /mnt/mauricio/retrotector/test/ReTe1.0.1/Workplace 
+Executormenu::
+SweepDNA
+SweepScripts
+Sequenceview
+CollectGenome
+Genomeview
+::
+SQLUserdefaults::
+ User: root
+::
+ORFIDdefaults::
+ Database: Ordinary
+ NonAlignedScore: 0.4
+ StopCodonFactor: -0.4
+ FrameShiftFactor: -1.5
+ ORFHexamerFactor: 0.2
+ NonORFHexamerFactor: -0.1
+ GlycosylationFactor: 0.2
+ InORFBonus: 0.1
+ MotifHitFactor: 0.2
+ MasterSkipPenalty: -0.2
+ StopCodonValue: -15
+ ScoreFactor: 0.1
+ MinSSScore: 600
+ MinHitScore: 15
+ Strand: Primary
+ FirstDNAStart: 1
+ LastDNAStart: 1
+ FirstDNAEnd: 200000
+ LastDNAEnd: 200000
+ Debugging: No 
+::
+LTRIDdefaults::
+ Database: Ordinary
+ ExponentStrength: 2
+ LTRepTolerance: 7
+ AATAAAWeight: 1
+ U5NetWeight: 2
+ GTWeight: 1
+ U3NetWeight: 1
+ TATAAWeight: 1
+ MEME50Weight: 1
+ Motifs1Weight: 4
+ Motifs2Weight: 4
+ TransSitesWeight: 1
+ CpGWeight: 1
+ SplitOctamerWeight: 1
+ SingleLTRThreshold: 0.18
+ DoSingleLTRs: Yes
+ MaxPairsOutput: 50
+ Debugging: No
+::
+
