@@ -166,4 +166,8 @@ CREATE TABLE ltrs_of_hervchain (
     ltr_id INTEGER NOT NULL REFERENCES ltr(id) ON DELETE CASCADE
 );
 
-
+CREATE INDEX idx_herv_chain_run ON herv_chain(run_metadata_id);
+CREATE INDEX idx_ltr_chain ON ltr(herv_chain_id);
+CREATE INDEX idx_motifs_chain ON motifs(herv_chain_id);
+CREATE INDEX idx_subgenes_chain ON subgenes(herv_chain_id);
+CREATE INDEX idx_domains_subgene ON domains(subgene_id);
