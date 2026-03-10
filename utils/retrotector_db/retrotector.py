@@ -541,35 +541,59 @@ def insert_ltrs_of_hervchain(conn, ltr_chain_links: list[dict]):
             (link["herv_chain_id"], link["ltr_id"])
         )
 
-def parse_and_load_retroctector(data,conn):
+def parse_and_load_retroctector(data, conn):
     # 1 - Parse and Insert run_metadata
+    try:
+        run_metadata = parse_run_metadata(data)
+        run_metadata_pk_id = insert_run_metadata(conn, run_metadata)
+        print(f"Inserted run_metadata ID: {run_metadata_pk_id}")
+    except Exception as e:
+        print("Error inserting run_metadata:", e)
+        import traceback; traceback.print_exc()
+        return  # Stop here if run_metadata fails
 
-    run_metadata = parse_run_metadata(data) 
-    run_metadata_pk_id = insert_run_metadata(conn,run_metadata)
+    # 2 - Get all chain blocks
+    chain_blocks = get_herv_chain_blocks(data)
 
-    # 2 - Get all chain blocks Parse all herv chain 
-    chain_blocks = get_herv_chain_blocks(data)        
+    for i, chain_block in enumerate(chain_blocks):
+        print(f"\nProcessing chain block {i}...")
 
-    for chain_block  in chain_blocks: # supports the option for multiple chains in a sequence 
-        
-        # 3 - Insert HERV chain and get its DB ID  
-        chain_metadata = extract_herv_chain_metadata(chain_block)            
-        herv_chain_id  = insert_herv_chain(conn, chain_metadata, run_metadata_pk_id)
+        # 3 - Insert HERV chain
+        try:
+            chain_metadata = extract_herv_chain_metadata(chain_block)
+            herv_chain_id = insert_herv_chain(conn, chain_metadata, run_metadata_pk_id)
+            print(f"Inserted HERV chain ID: {herv_chain_id}")
+        except Exception as e:
+            print(f"Error inserting HERV chain for block {i}:", e)
+            import traceback; traceback.print_exc()
+            continue
 
-        # 4. Parse subgenes and domains
+        # 4 - Insert subgenes and domains
+        try:
+            subgenes, domains = parse_subgenes_and_domains(chain_block)
+            insert_subgenes_domains(conn, subgenes, domains, herv_chain_id)
+            print(f"Inserted {len(subgenes)} subgenes and {len(domains)} domains for HERV chain {herv_chain_id}")
+        except Exception as e:
+            print(f"Error inserting subgenes/domains for HERV chain {herv_chain_id}:", e)
+            import traceback; traceback.print_exc()
 
-        subgenes, domains = parse_subgenes_and_domains(chain_block) # pass chain data only 
-        insert_subgenes_domains(conn,subgenes,domains,herv_chain_id )
-        
-        # 5-  Parse motifs 
-            
-        motifs = parse_motifs(chain_block) 
-        insert_motifs(conn, motifs, herv_chain_id )
+        # 5 - Insert motifs
+        try:
+            motifs = parse_motifs(chain_block)
+            insert_motifs(conn, motifs, herv_chain_id)
+            print(f"Inserted {len(motifs)} motifs for HERV chain {herv_chain_id}")
+        except Exception as e:
+            print(f"Error inserting motifs for HERV chain {herv_chain_id}:", e)
+            import traceback; traceback.print_exc()
 
-        # 6 -  LTR and SoloLTR 
-
-        ltr = parse_ltrs(data)
-        insert_ltrs(conn,ltr,herv_chain_id )  
+        # 6 - Insert LTRs (soloLTRs + chain LTRs)
+        try:
+            ltr = parse_ltrs(data)
+            insert_ltrs(conn, ltr, herv_chain_id)
+            print(f"Inserted {len(ltr)} LTR entries for HERV chain {herv_chain_id}")
+        except Exception as e:
+            print(f"Error inserting LTRs for HERV chain {herv_chain_id}:", e)
+            import traceback; traceback.print_exc()
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Parse and insert Retrotector JSON into the database.")
@@ -602,6 +626,10 @@ def main():
 
     except Exception as e:
         print(f"Error: {e}")
+        import traceback
+        print("Error processing JSON:", args.input)
+        traceback.print_exc()
+        raise
 
     finally:
         if conn:
